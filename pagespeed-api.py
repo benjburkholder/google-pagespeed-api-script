@@ -9,7 +9,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
 
     for line in content:
         file = open('pagespeed-results.csv', 'a') # csv will be created automatically on local machine
-        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}?api-key-here' # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
+        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}?api-key-here' # This is the google pagespeed api url structure, using for loop to insert each url in .txt file.
         r = requests.get(x)
         final = r.json()
         urlid = final['id']
@@ -21,6 +21,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         file.write(ID + '\n')
         file.write(FCP + '\n')
         file.write(INPUT + '\n')
+        file.write('\n')
         file.close()
 
         print(ID) 
