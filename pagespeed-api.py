@@ -13,6 +13,8 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         r = requests.get(x)
         final = r.json()
         urlid = final['id']
+        split = urlid.split('?') # This splits the absolute url from the api key parameter
+        urlid = split[0] # This reassigns urlid to the absolute url
         ID = urlid
         urlfcp = final['loadingExperience']['metrics']['FIRST_CONTENTFUL_PAINT_MS']
         FCP = f'First Contentful Paint: {urlfcp}'
