@@ -16,7 +16,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         final = r.json()
         
         urlid = final['id']
-        split = urlid.split('?') # This splits the absolute url from the api key parameter
+        split = urlid.split('?') # This splits parameters from the absolute URL for clean display.
         urlid = split[0] # This reassigns urlid to the absolute url
         ID = urlid
         urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
