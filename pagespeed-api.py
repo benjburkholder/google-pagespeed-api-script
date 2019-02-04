@@ -34,7 +34,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             file.write('\n')
         except NameError:
             print(f'<NameError> Failing because of KeyError {line}.')
-            file.write(f'<KeyError> & <NameError> Failing because of nonexistant Key - {line}.' + '\n')
+            file.write(f'<KeyError> & <NameError> Failing because of nonexistent Key - {line}.' + '\n')
             file.write('\n')
         
         file.close()
