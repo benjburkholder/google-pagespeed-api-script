@@ -15,24 +15,34 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         r = requests.get(x)
         final = r.json()
         
-        urlid = final['id']
-        split = urlid.split('?') # This splits parameters from the absolute URL for clean display.
-        urlid = split[0] # This reassigns urlid to the absolute url
-        ID = urlid
-        urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
-        FCP = f'First Contentful Paint: {str(urlfcp)}'
-        urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
-        FI = f'First Interactive: {str(urlfi)}'
+        try:
+            urlid = final['id']
+            split = urlid.split('?') # This splits the absolute url from the api key parameter
+            urlid = split[0] # This reassigns urlid to the absolute url
+            ID = urlid
+            urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
+            FCP = f'First Contentful Paint: {str(urlfcp)}'
+            urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
+            FI = f'First Interactive: {str(urlfi)}'
+        except KeyError:
+            print(f'<KeyError> One or more keys not found {line}.')
         
-        file.write(ID + '\n')
-        file.write(FCP + '\n')
-        file.write(FI + '\n')
-        file.write('\n')
+        try:
+            file.write(ID + '\n')
+            file.write(FCP + '\n')
+            file.write(FI + '\n')
+            file.write('\n')
+        except NameError:
+            print(f'<NameError> Failing because of KeyError {line}.')
+            file.write(f'<KeyError> & <NameError> Failing because of nonexistant Key - {line}.' + '\n')
+            file.write('\n')
         
         file.close()
         
-        
-        print(ID) 
-        print(FCP)
-        print(FI)
+        try:
+            print(ID) 
+            print(FCP)
+            print(FI)
+        except NameError:
+            print(f'<NameError> Failing because of KeyError {line}.')
         
