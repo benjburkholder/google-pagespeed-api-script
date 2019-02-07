@@ -1,5 +1,6 @@
 import requests
 import json
+from datetime import datetime
 
 # Documentation: https://developers.google.com/speed/docs/insights/v5/get-started
 
@@ -28,6 +29,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             print(f'<KeyError> One or more keys not found {line}.')
         
         try:
+            file.write(str(datetime.now()) + '\n')
             file.write(ID + '\n')
             file.write(FCP + '\n')
             file.write(FI + '\n')
@@ -40,9 +42,11 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         file.close()
         
         try:
+            print(datetime.now())
             print(ID) 
             print(FCP)
             print(FI)
+            print('\n')
         except NameError:
             print(f'<NameError> Failing because of KeyError {line}.')
         
