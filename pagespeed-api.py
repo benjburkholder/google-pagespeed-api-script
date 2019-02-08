@@ -20,7 +20,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             urlid = final['id']
             split = urlid.split('?') # This splits the absolute url from the api key parameter
             urlid = split[0] # This reassigns urlid to the absolute url
-            ID = urlid
+            ID = f'URL: {urlid}'
             urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
             FCP = f'First Contentful Paint: {str(urlfcp)}'
             urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
@@ -29,7 +29,7 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             print(f'<KeyError> One or more keys not found {line}.')
         
         try:
-            file.write(str(datetime.now()) + '\n')
+            file.write('Timestamp: ' + str(datetime.now()) + '\n')
             file.write(ID + '\n')
             file.write(FCP + '\n')
             file.write(FI + '\n')
@@ -42,8 +42,8 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         file.close()
         
         try:
-            print(datetime.now())
-            print(ID) 
+            print('Timestamp: ' + str(datetime.now()))
+            print(ID)
             print(FCP)
             print(FI)
             print('\n')
