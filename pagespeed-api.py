@@ -20,33 +20,33 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             urlid = final['id']
             split = urlid.split('?') # This splits the absolute url from the api key parameter
             urlid = split[0] # This reassigns urlid to the absolute url
-            ID = f'URL: {urlid}'
+            ID = f'URL ~ {urlid}'
             urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
-            FCP = f'First Contentful Paint: {str(urlfcp)}'
+            FCP = f'First Contentful Paint ~ {str(urlfcp)}'
             urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
-            FI = f'First Interactive: {str(urlfi)}'
-        except KeyError:
-            print(f'<KeyError> One or more keys not found {line}.')
+            FI = f'First Interactive ~ {str(urlfi)}'
+        except KeyError as e:
+            print(f'{e} ~ {line}.')
         
         try:
-            file.write('Timestamp: ' + str(datetime.now()) + '\n')
+            file.write('Timestamp ~ ' + str(datetime.now()) + '\n')
             file.write(ID + '\n')
             file.write(FCP + '\n')
             file.write(FI + '\n')
             file.write('\n')
-        except NameError:
-            print(f'<NameError> Failing because of KeyError {line}.')
-            file.write(f'<KeyError> & <NameError> Failing because of nonexistent Key - {line}.' + '\n')
+        except NameError as e:
+            print(f'{e} ~ {line}.')
+            file.write(f'{e} ~ {line}.' + '\n')
             file.write('\n')
         
         file.close()
         
         try:
-            print('Timestamp: ' + str(datetime.now()))
+            print('Timestamp ~ ' + str(datetime.now()))
             print(ID)
             print(FCP)
             print(FI)
             print('\n')
-        except NameError:
-            print(f'<NameError> Failing because of KeyError {line}.')
+        except NameError as e:
+            print(f'{e} ~ {line}.')
         
