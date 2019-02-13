@@ -1,6 +1,5 @@
 import requests
 import json
-from datetime import datetime
 
 # Documentation: https://developers.google.com/speed/docs/insights/v5/get-started
 
@@ -25,28 +24,25 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
             FCP = f'First Contentful Paint ~ {str(urlfcp)}'
             urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
             FI = f'First Interactive ~ {str(urlfi)}'
-        except KeyError as e:
-            print(f'{e} ~ {line}.')
+        except KeyError:
+            print(f'<KeyError> One or more keys not found {line}.')
         
         try:
-            file.write('Timestamp ~ ' + str(datetime.now()) + '\n')
             file.write(ID + '\n')
             file.write(FCP + '\n')
             file.write(FI + '\n')
             file.write('\n')
-        except NameError as e:
-            print(f'{e} ~ {line}.')
-            file.write(f'{e} ~ {line}.' + '\n')
+        except NameError:
+            print(f'<NameError> Failing because of KeyError {line}.')
+            file.write(f'<KeyError> & <NameError> Failing because of nonexistant Key ~ {line}.' + '\n')
             file.write('\n')
         
         file.close()
         
         try:
-            print('Timestamp ~ ' + str(datetime.now()))
-            print(ID)
+            print(ID) 
             print(FCP)
             print(FI)
-            print('\n')
-        except NameError as e:
-            print(f'{e} ~ {line}.')
+        except NameError:
+            print(f'<NameError> Failing because of KeyError {line}.')
         
