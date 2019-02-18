@@ -11,13 +11,14 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
     content = pagespeedurls.readlines()
     content = [line.rstrip('\n') for line in content]
 
-    columnTitleRow = "URL, First Contentful Paint, First Interactive\n"
+    #file = open('pagespeed-results.csv', 'a') # csv will be created automatically on local machine
+    columnTitleRow = "ID, FCP, FI\n"
     file.write(columnTitleRow)
 
 
     for line in content:
-        # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
-        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy=mobile'
+        
+        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy=mobile' # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
         r = requests.get(x)
         final = r.json()
         
@@ -36,7 +37,13 @@ with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pages
         except KeyError:
             print(f'<KeyError> One or more keys not found {line}.')
         
+
+        
         try:
+            #file.write(ID + '\n')
+            #file.write(FCP + '\n')
+            #file.write(FI + '\n')
+            #file.write('\n')
             row = f'{ID2},{FCP2},{FI2}\n'
             file.write(row)
         except NameError:
