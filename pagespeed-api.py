@@ -5,7 +5,8 @@ import json
 
 # JSON paths: https://developers.google.com/speed/docs/insights/v4/reference/pagespeedapi/runpagespeed
 
-with open('pagespeed.txt') as pagespeedurls: # Create a local file called 'pagespeed.txt' and populate it with URLs to test
+# Create a local file called 'pagespeed.txt' and populate it with URLs to test
+with open('pagespeed.txt') as pagespeedurls:
     download_dir = 'pagespeed-results.csv'
     file = open(download_dir, 'w')
     content = pagespeedurls.readlines()
