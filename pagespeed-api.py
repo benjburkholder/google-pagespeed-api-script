@@ -52,4 +52,3 @@ with open('pagespeed.txt') as pagespeedurls:
             print(f'<NameError> Failing because of KeyError {line}.')
 
     file.close()
-        
