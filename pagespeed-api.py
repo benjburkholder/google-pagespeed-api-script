@@ -15,9 +15,9 @@ with open('pagespeed.txt') as pagespeedurls:
     columnTitleRow = "URL, First Contentful Paint, First Interactive\n"
     file.write(columnTitleRow)
 
-
+    # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
     for line in content:
-        # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
+        # If no "strategy" parameter is included, the query by default returns desktop data.
         x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy=mobile'
         r = requests.get(x)
         final = r.json()
