@@ -5,7 +5,7 @@ import json
 
 # JSON paths: https://developers.google.com/speed/docs/insights/v4/reference/pagespeedapi/runpagespeed
 
-# Create a local file called 'pagespeed.txt' and populate it with URLs to test
+# Populate 'pagespeed.txt' file with URLs to query against API.
 with open('pagespeed.txt') as pagespeedurls:
     download_dir = 'pagespeed-results.csv'
     file = open(download_dir, 'w')
@@ -52,4 +52,3 @@ with open('pagespeed.txt') as pagespeedurls:
             print(f'<NameError> Failing because of KeyError {line}.')
 
     file.close()
-    
