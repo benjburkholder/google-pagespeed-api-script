@@ -1,5 +1,4 @@
 import requests
-import json
 
 # Documentation: https://developers.google.com/speed/docs/insights/v5/get-started
 
@@ -19,6 +18,7 @@ with open('pagespeed.txt') as pagespeedurls:
     for line in content:
         # If no "strategy" parameter is included, the query by default returns desktop data.
         x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy=mobile'
+        print(f'Requesting {x}...')
         r = requests.get(x)
         final = r.json()
         
