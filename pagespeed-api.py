@@ -1,54 +1,71 @@
 import requests
+import sys
+import os
+from time import gmtime, strftime
+from concurrent.futures import ThreadPoolExecutor
+
+# Set in your bash profile, get from Google:  https://console.developers.google.com/apis/credentials
+API_KEY = os.environ.get('API_KEY')
 
 # Documentation: https://developers.google.com/speed/docs/insights/v5/get-started
+def main(strategy="mobile"):
+    try:
+        strategy = sys.argv[1]
+    except IndexError:
+        print("You can pass 'mobile' or 'desktop' as parameter. Running mobile by default.")
+    # Pull URLS from 'pagespeed.txt' to query against API.
+    with open('pagespeed.txt') as pagespeedurls:
+        stamp = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+        download_dir = f'pagespeed-results-{strategy}-{stamp}.csv'
+        file = open(download_dir, 'w')
+        content = pagespeedurls.readlines()
+        content = [line.rstrip('\n') for line in content]
+        columnTitleRow = "URL, Score, First Contentful Paint, First Interactive\n"   # CSV header
+        file.write(columnTitleRow)
 
-# JSON paths: https://developers.google.com/speed/docs/insights/v4/reference/pagespeedapi/runpagespeed
+        def get_speed(line):
+            # Query API.
+            x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy={strategy}&key={API_KEY}'
+            print(f'Requesting {x}...')
+            r = requests.get(x)
+            final = r.json()
+            
+            try:
+                urlid = final['id']
+                split = urlid.split('?') # This splits the absolute url from the api key parameter
+                urlid = split[0] # This reassigns urlid to the absolute url
+                ID = f'URL ~ {urlid}'
+                ID2 = str(urlid)
+                # JSON paths: https://developers.google.com/speed/docs/insights/v4/reference/pagespeedapi/runpagespeed
+                urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
+                FCP = f'First Contentful Paint ~ {str(urlfcp)}'
+                FCP2 = str(urlfcp)
+                urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
+                FI = f'First Interactive ~ {str(urlfi)}'
+                FI2 = str(urlfi)
+                urlscore = final['lighthouseResult']['categories']['performance']['score']
+                SC = f'Score ~ {str(urlscore)}'
+                SC2 = str(urlscore)
+            except KeyError:
+                print(f'<KeyError> One or more keys not found {line}.')
+            
+            try:
+                row = f'{ID2},{SC2},{FCP2},{FI2}\n'
+                file.write(row)
+            except NameError:
+                print(f'<NameError> Failing because of KeyError {line}.')
+                file.write(f'<KeyError> & <NameError> Failing because of nonexistant Key ~ {line}.' + '\n')
+            
+            try:
+                print(ID)
+                print(SC) 
+                print(FCP)
+                print(FI)
+            except NameError:
+                print(f'<NameError> Failing because of KeyError {line}.')
+        with ThreadPoolExecutor() as executor:  # Make multithreaded, 5x your processors by default
+            executor.map(get_speed, content)
 
-# Populate 'pagespeed.txt' file with URLs to query against API.
-with open('pagespeed.txt') as pagespeedurls:
-    download_dir = 'pagespeed-results.csv'
-    file = open(download_dir, 'w')
-    content = pagespeedurls.readlines()
-    content = [line.rstrip('\n') for line in content]
-
-    columnTitleRow = "URL, First Contentful Paint, First Interactive\n"
-    file.write(columnTitleRow)
-
-    # This is the google pagespeed api url structure, using for loop to insert each url in .txt file
-    for line in content:
-        # If no "strategy" parameter is included, the query by default returns desktop data.
-        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy=mobile'
-        print(f'Requesting {x}...')
-        r = requests.get(x)
-        final = r.json()
-        
-        try:
-            urlid = final['id']
-            split = urlid.split('?') # This splits the absolute url from the api key parameter
-            urlid = split[0] # This reassigns urlid to the absolute url
-            ID = f'URL ~ {urlid}'
-            ID2 = str(urlid)
-            urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
-            FCP = f'First Contentful Paint ~ {str(urlfcp)}'
-            FCP2 = str(urlfcp)
-            urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
-            FI = f'First Interactive ~ {str(urlfi)}'
-            FI2 = str(urlfi)
-        except KeyError:
-            print(f'<KeyError> One or more keys not found {line}.')
-        
-        try:
-            row = f'{ID2},{FCP2},{FI2}\n'
-            file.write(row)
-        except NameError:
-            print(f'<NameError> Failing because of KeyError {line}.')
-            file.write(f'<KeyError> & <NameError> Failing because of nonexistant Key ~ {line}.' + '\n')
-        
-        try:
-            print(ID) 
-            print(FCP)
-            print(FI)
-        except NameError:
-            print(f'<NameError> Failing because of KeyError {line}.')
-
-    file.close()
+        file.close()
+if __name__ == '__main__':
+    main()
