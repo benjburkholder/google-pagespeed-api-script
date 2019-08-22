@@ -1,7 +1,7 @@
 import requests
 import sys
 import os
-from time import gmtime, strftime
+from time import localtime, strftime
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -16,7 +16,7 @@ def main(strategy="mobile"):
         print("You can pass 'mobile' or 'desktop' as parameter. Running mobile by default.")
     # Pull URLS from 'pagespeed.txt' to query against API.
     with open('pagespeed.txt') as pagespeedurls:
-        stamp = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+        stamp = strftime("%Y-%m-%d_%H-%M-%S", localtime())
         csv_out = Path("results/")
         download_dir = csv_out / f'pagespeed-results-{strategy}-{stamp}.csv'
         file = open(download_dir, 'w')
