@@ -16,9 +16,9 @@ def main(strategy="mobile"):
         print("You can pass 'mobile' or 'desktop' as parameter. Running mobile by default.")
     # Pull URLS from 'pagespeed.txt' to query against API.
     with open('pagespeed.txt') as pagespeedurls:
-        stamp = strftime("%Y-%m-%d_%H-%M-%S", localtime())
+        stamp = strftime("%Y-%m-%d_at_%H.%M.%S", localtime())
         csv_out = Path("results/")
-        download_dir = csv_out / f'pagespeed-results-{strategy}-{stamp}.csv'
+        download_dir = csv_out / f'{strategy}-{stamp}.csv'
         file = open(download_dir, 'w')
         content = pagespeedurls.readlines()
         content = [line.rstrip('\n') for line in content]
@@ -41,10 +41,10 @@ def main(strategy="mobile"):
                 # JSON paths: https://developers.google.com/speed/docs/insights/v4/reference/pagespeedapi/runpagespeed
                 urlfcp = final['lighthouseResult']['audits']['first-contentful-paint']['displayValue']
                 FCP = f'First Contentful Paint ~ {str(urlfcp)}'
-                FCP2 = str(urlfcp)
+                FCP2 = str(urlfcp[:-2])
                 urlfi = final['lighthouseResult']['audits']['interactive']['displayValue']
                 FI = f'First Interactive ~ {str(urlfi)}'
-                FI2 = str(urlfi)
+                FI2 = str(urlfi[:-2])
                 urlscore = final['lighthouseResult']['categories']['performance']['score']
                 SC = f'Score ~ {str(urlscore)}'
                 SC2 = str(urlscore)
