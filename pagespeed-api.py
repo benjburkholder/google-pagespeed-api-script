@@ -3,9 +3,10 @@ import sys
 import os
 from time import gmtime, strftime
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
 # Set in your bash profile, get from Google:  https://console.developers.google.com/apis/credentials
-API_KEY = os.environ.get('API_KEY')
+SPD_API_KEY = os.environ.get('SPD_API_KEY')
 
 # Documentation: https://developers.google.com/speed/docs/insights/v5/get-started
 def main(strategy="mobile"):
@@ -16,7 +17,8 @@ def main(strategy="mobile"):
     # Pull URLS from 'pagespeed.txt' to query against API.
     with open('pagespeed.txt') as pagespeedurls:
         stamp = strftime("%Y-%m-%d_%H:%M:%S", gmtime())
-        download_dir = f'pagespeed-results-{strategy}-{stamp}.csv'
+        csv_out = Path("results/")
+        download_dir = csv_out / f'pagespeed-results-{strategy}-{stamp}.csv'
         file = open(download_dir, 'w')
         content = pagespeedurls.readlines()
         content = [line.rstrip('\n') for line in content]
@@ -25,7 +27,7 @@ def main(strategy="mobile"):
 
         def get_speed(line):
             # Query API.
-            x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy={strategy}&key={API_KEY}'
+            x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}&strategy={strategy}&key={SPD_API_KEY}'
             print(f'Requesting {x}...')
             r = requests.get(x)
             final = r.json()

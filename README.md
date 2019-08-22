@@ -56,7 +56,7 @@ Score ~ 1.0
 First Contentful Paint ~ 0.8 s
 First Interactive ~ 0.8 s
 ```
-And you should have a file named `pagespeed-results-mobile-2019-08-21_23:33:59.csv` in your directory. It's results will look like:
+And you should have a file named `pagespeed-results-mobile-2019-08-21_23:33:59.csv` saved to the "results" directory. It will look like:
 
 ```
 URL, Score, First Contentful Paint, First Interactive
@@ -72,6 +72,19 @@ https://www.example.com/,1.0,0.8 s,0.8 s
 https://www.example.com/,1.0,0.8 s,0.8 s
 ```
 
-## Credit
+## Credit / References
 
-This is a fork of [ibebeebz pagespeed project](https://github.com/ibebeebz/google-pagespeed-api-script).
+This is a fork of [ibebeebz pagespeed project](https://github.com/ibebeebz/google-pagespeed-api-script). Many thanks to ibebeebz!
+
+### References
+
+These were helpful to me today:
+
+- [Guide to concurrency and parallelism](https://toptal.com/python/beginners-guide-to-concurrency-and-parallelism-in-python) from Toptal that really helped me.
+- Google's [PageSpeed API docs](https://developers.google.com/speed/docs/insights/v5/get-started)
+
+### Fork differences
+
+The main reason I forked this project was because it was taking quite a while to query hundreds of pages, and I wanted to do it several times a day for mobile and desktop.
+
+So I added multithreading (most of the time spent is just waiting on Google's response), the ability to specify device, and stamping the csv output so it's unique.
